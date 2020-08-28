@@ -26,7 +26,7 @@ GameLoad.prototype.mapACGamesListToOC = function (acGamesList) {
 		var ocGame = {};
 		ocGame.name = game.name;
 		ocGame.author = game.author;
-		ocGame.live = game.live;
+		ocGame.live = game.live.replace('http://','https://');;
 		if (game.players_min !== null) ocGame.minPlayers = game.players_min;
 		if (game.players_max !== null) ocGame.maxPlayers = game.players_max;
 		else ocGame.maxPlayers = 0;
