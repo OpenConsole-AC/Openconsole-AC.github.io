@@ -1,7 +1,7 @@
 {
 "game":   { "relLoc": "index.html", "type":"cached" },
 "canvas": { "aspect": "0" },
-"ctrl":   { "loc": "http://localhost:8000/Controller/index.html" },
+"ctrl":   { "loc": "https://openconsole-ac.github.io/Controller/index.html" },
 "controls": {
   "maxPlayers": 1,
   "keymap": [
