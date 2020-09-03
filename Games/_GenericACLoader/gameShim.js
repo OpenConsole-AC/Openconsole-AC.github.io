@@ -140,6 +140,7 @@ GameShim.prototype.receiveMessage = function (event) {
   }
   else if (event.origin === gShim.ocGamesPageLocation) {
     if (message.type == "SetGame") {
+      gShim.currGameName = message.game.name;
       gShim.currGameLive = message.game.live;
       gShim.setGameIframe(message.game.live + "screen.html", function () {});
       gShim.setGameCtrl(message.game.live + "controller.html", false);
