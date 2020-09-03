@@ -121,6 +121,7 @@ GameShim.prototype.receiveMessage = function (event) {
         } else {
           gShim.setGameCtrl(gShim.currGameLive + "controller.html", false);
         }
+        break;
       case "LeaveGame":
         if (gShim.currGameName == "_ChooseGame") {
           gShim.currGameName = "";
