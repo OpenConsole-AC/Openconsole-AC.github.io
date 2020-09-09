@@ -111,16 +111,18 @@ GameShim.prototype.receiveMessage = function (event) {
         break;
       case "Custom":
       case "SimulateBtn":
-        gShim.sendMessage(message, "*");
+        gShim.sendMessage(message);
         break;
       case "SetPlayers":
-        gShim.sendGamePlayers(gShim.players, message.players);
-        gShim.players = message.players;
         if (gShim.currGameName == "_ChooseGame") {
+          // Relay message
+          gShim.sendMessage(message);
           gShim.setGameCtrl(null, true);
         } else {
+          gShim.sendGamePlayers(gShim.players, message.players);
           gShim.setGameCtrl(gShim.currGameLive + "controller.html", false);
         }
+          gShim.players = message.players;
         break;
       case "LeaveGame":
         if (gShim.currGameName == "_ChooseGame") {
