@@ -24,6 +24,7 @@ CtrlShim.prototype.setCtrlIframe = function (loc, loadFun) {
   cShim.iframe.src = loc;
 }
 CtrlShim.prototype.setGameSelCtrlLayout = function() {
+  if (cShim.ctrlLoc != cShim.gameSelectCtrlLocation) return;
   if (cShim.playerId == 0) {
     cShim.sendMessageString("{\"type\":\"SetLayout\",\"keymap\":{\"Up\":{\"isKeyboard\":true,\"data\":[38,\"ArrowUp\",\"ArrowUp\"]},\"Down\":{\"isKeyboard\":true,\"data\":[40,\"ArrowDown\",\"ArrowDown\"]},\"Left\":{\"isKeyboard\":true,\"data\":[37,\"ArrowLeft\",\"ArrowLeft\"]},\"Right\":{\"isKeyboard\":true,\"data\":[39,\"ArrowRight\",\"ArrowRight\"]},\"Enter\":{\"isKeyboard\":true,\"data\":[13,\"Enter\",\"Enter\"]}}}");
   } else {
@@ -75,6 +76,7 @@ CtrlShim.prototype.receiveMessage = function (event) {
   if (event.origin === cShim.consolePageLocation) {
     if (message.type == "SetLayout") {
       cShim.playerId = message.keymap.playerId;
+      cShim.setGameSelCtrlLayout();
     } else if (message.type == "Key") {
       parent.postMessage(message, "*");
     } else if (message.type == "Custom") {
