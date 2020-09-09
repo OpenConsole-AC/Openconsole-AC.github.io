@@ -50,7 +50,7 @@ CtrlShim.prototype.buildReadyMessage = function () {
 
 CtrlShim.prototype.registerPlayers = function (readyMsg, count) {
   for (var i = 0; i < count; i++) {
-    var updtMsg = cShim.buildUpdateMessage(i, "Player_" + i);
+    var updtMsg = cShim.buildUpdateMessage(i, "Player " + (i + 1));
     readyMsg.devices.push(updtMsg.device_data);
   }
   return readyMsg;
@@ -96,6 +96,7 @@ CtrlShim.prototype.receiveMessage = function (event) {
           break;
         case "message":
           message.from = 0;
+          if (message.to != null) message.to = message.to + 1;
           cShim.sendMessage(message, "*");
           break;
       }
