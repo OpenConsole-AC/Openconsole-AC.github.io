@@ -107,8 +107,8 @@ CtrlShim.prototype.receiveMessage = function (event) {
   else if (event.origin !== window.location.origin) {
     switch (message.action) {
       case "set":
-        //message.type = "Custom";
-        //parent.postMessage(message, "*");
+        message.type = "Custom";
+        parent.postMessage(message, "*");
         break;
       case "ready":
         var readyMsg = cShim.buildReadyMessage();
