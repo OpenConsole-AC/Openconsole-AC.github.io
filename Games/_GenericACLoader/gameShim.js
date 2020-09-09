@@ -85,7 +85,7 @@ GameShim.prototype.buildUpdateMessage = function (playerId, playerName) {
   var updtMsg = {
     "action":"update","device_id":(playerId+1),"device_data":{
       "uid":"f728174fd5024ccc69503ebe03293d8e","nickname":playerName,"auth":true,
-      "picture":-2903061661843138600,"token":"ffe1c0b9188c255f9547655d0e27984a","premium":false,
+      "picture":-2903061661843138600,"token":"ffe1c0b9188c255f9547655d0e27984a","premium":true,
       "referrer":{"ts":1582131345703,"id":"screen.referrer.google.com@/"},"language":"en","client":{"app":"web","partner":"airconsole"},
       "rtc":2,"version":1,"slow_connection":false,"location":(gShim.currGameLive + "controller.html")
     }
