@@ -161,6 +161,7 @@ GameShim.prototype.receiveMessage = function (event) {
         break;
       case "message":
         message.type = "Custom";
+        if (message.to != null) message.to = message.to - 1;
         parent.postMessage(message, "*");
         break;
     }
