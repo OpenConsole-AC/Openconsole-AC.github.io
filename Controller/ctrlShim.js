@@ -24,8 +24,11 @@ CtrlShim.prototype.setCtrlIframe = function (loc, loadFun) {
   cShim.iframe.src = loc;
 }
 CtrlShim.prototype.setGameSelCtrlLayout = function() {
-  if (cShim.playerId != 0) return;
-  cShim.sendMessageString("{\"type\":\"SetLayout\",\"keymap\":{\"Up\":{\"isKeyboard\":true,\"data\":[38,\"ArrowUp\",\"ArrowUp\"]},\"Down\":{\"isKeyboard\":true,\"data\":[40,\"ArrowDown\",\"ArrowDown\"]},\"Left\":{\"isKeyboard\":true,\"data\":[37,\"ArrowLeft\",\"ArrowLeft\"]},\"Right\":{\"isKeyboard\":true,\"data\":[39,\"ArrowRight\",\"ArrowRight\"]},\"Enter\":{\"isKeyboard\":true,\"data\":[13,\"Enter\",\"Enter\"]}}}");
+  if (cShim.playerId == 0) {
+    cShim.sendMessageString("{\"type\":\"SetLayout\",\"keymap\":{\"Up\":{\"isKeyboard\":true,\"data\":[38,\"ArrowUp\",\"ArrowUp\"]},\"Down\":{\"isKeyboard\":true,\"data\":[40,\"ArrowDown\",\"ArrowDown\"]},\"Left\":{\"isKeyboard\":true,\"data\":[37,\"ArrowLeft\",\"ArrowLeft\"]},\"Right\":{\"isKeyboard\":true,\"data\":[39,\"ArrowRight\",\"ArrowRight\"]},\"Enter\":{\"isKeyboard\":true,\"data\":[13,\"Enter\",\"Enter\"]}}}");
+  } else {
+    cShim.sendMessageString("{\"type\":\"SetLayout\",\"keymap\":{}}");
+  }
 }
 
 CtrlShim.prototype.buildReadyMessage = function () {
