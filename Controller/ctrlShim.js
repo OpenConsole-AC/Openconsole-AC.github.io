@@ -31,6 +31,13 @@ CtrlShim.prototype.setGameSelCtrlLayout = function() {
     cShim.sendMessageString("{\"type\":\"SetLayout\",\"keymap\":{}}");
   }
 }
+CtrlShim.prototype.rotateGameCtrl = function () {
+  if (cShim.iframe == null) return;
+  cShim.iframe.style.height = "100vw";
+  cShim.iframe.style.width = "100vh";
+  cShim.iframe.style.transform = "rotate(-90deg) translateX(-100%)";
+  cShim.iframe.style.transformOrigin = "top left";
+}
 
 CtrlShim.prototype.buildReadyMessage = function () {
   var liveLoc = cShim.ctrlLoc.substring(0, cShim.ctrlLoc.length - 15);
@@ -107,8 +114,14 @@ CtrlShim.prototype.receiveMessage = function (event) {
   else if (event.origin !== window.location.origin) {
     switch (message.action) {
       case "set":
-        message.type = "Custom";
-        parent.postMessage(message, "*");
+        if (message.key == "custom") {
+          message.type = "Custom";
+          parent.postMessage(message, "*");
+        } else if (message.key == "orientation") {
+          if (message.value == null) {
+            cShim.rotateGameCtrl();
+          }
+        }
         break;
       case "ready":
         var readyMsg = cShim.buildReadyMessage();
