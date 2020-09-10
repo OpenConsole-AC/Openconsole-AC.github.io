@@ -6,6 +6,7 @@ function GameLoad() {
 }
 
 GameLoad.prototype.initialize = function () {
+  if (gLoad.gamesList.length != 0) return;
   gLoad.loadPage(gLoad.corsProxy + gLoad.acLoc, function (pageData) {
     gLoad.parseGamesList(pageData);
   }, 
@@ -16,6 +17,7 @@ GameLoad.prototype.parseGamesList = function (pageData) {
 	gLoad.mapACGamesListToOC(JSON.parse(data));
 }
 GameLoad.prototype.mapACGamesListToOC = function (acGamesList) {
+  if (gLoad.gamesList.length != 0) return;
 	console.log(acGamesList);
 	var games = acGamesList.games;
 	for (var gameKey of Object.keys(games)) {
