@@ -59,7 +59,7 @@ GameShim.prototype.buildReadyMessage = function () {
       "client":{"partner":"airconsole","app":"web","ua":{"platform":{"version":"10","name":"Windows"},"os":{"version":"10","name":"Windows"},
       "bot":false,"browser":{"version":"79.0","name":"Firefox"}}},"referrer":{"ts":1582131345703,"id":"screen.referrer.google.com@/"},
       "remote_screens":false,"version":1,"url":gShim.currGameLive
-      ,"location":(gShim.currGameLive + "screen.html"),"players":[]},
+      ,"location":(gShim.currGameLive + "screen.html"),"players":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]},
     ],
     "server_time_offset":42};
   return readyMsg;
