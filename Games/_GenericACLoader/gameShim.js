@@ -120,7 +120,7 @@ GameShim.prototype.receiveMessage = function (event) {
             break;
           case "message":
             if (message.from != null) message.from = message.from + 1;
-            cShim.sendMessage(message, "*");
+            gShim.sendMessage(message, "*");
             break;
         }
         break;
