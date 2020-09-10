@@ -34,6 +34,11 @@ GameLoad.prototype.mapACGamesListToOC = function (acGamesList) {
 		if (game.video !== null) ocGame.highlightPic = game.video;
 		gLoad.gamesList.push(ocGame);
 	}
+  gLoad.gamesList.sort(function(g1, g2) {
+    var textG1 = g1.name.toUpperCase();
+    var textG2 = g2.name.toUpperCase();
+    return (textG1 < textG2) ? -1 : (textG1 > textG2) ? 1 : 0;
+  });
 }
 
 GameLoad.prototype.loadPage = function (path, success, error) {
