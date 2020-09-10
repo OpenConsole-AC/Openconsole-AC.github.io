@@ -110,14 +110,20 @@ GameShim.prototype.receiveMessage = function (event) {
         //gShim.iframe.src = gShim.currGameLoc;
         break;
       case "Custom":
-        if (message.action != null && message.action == "set") {
-          var messageToSend = { action : "update", device_id : (message.from + 1) };
-          if (message.key == "custom") {
-            messageToSend.device_data = { _is_custom_update : true, location : gShim.currGameLive + "screen.html", custom : message.value };
-            gShim.sendMessage (messageToSend);
-          }
-          break;
+        switch (message.action) {
+          case "set":
+            var messageToSend = { action : "update", device_id : (message.from + 1) };
+            if (message.key == "custom") {
+              messageToSend.device_data = { _is_custom_update : true, location : gShim.currGameLive + "screen.html", custom : message.value };
+              gShim.sendMessage (messageToSend);
+            }
+            break;
+          case "message":
+            if (message.from != null) message.from = message.from + 1;
+            cShim.sendMessage(message, "*");
+            break;
         }
+        break;
       case "SimulateBtn":
         gShim.sendMessage(message);
         break;

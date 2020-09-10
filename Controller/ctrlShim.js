@@ -81,34 +81,38 @@ CtrlShim.prototype.receiveMessage = function (event) {
   console.log(message);
   console.log(JSON.stringify(message));
   if (event.origin === cShim.consolePageLocation) {
-    if (message.type == "SetLayout") {
-      cShim.playerId = message.keymap.playerId;
-      cShim.setGameSelCtrlLayout();
-    } else if (message.type == "Key") {
-      parent.postMessage(message, "*");
-    } else if (message.type == "Custom") {
-      switch (message.action) {
-        case "setCtrl":
-          if (message.gameSelect) {
-            cShim.setCtrlIframe(cShim.gameSelectCtrlLocation, cShim.setGameSelCtrlLayout); 
-          } else {
-            cShim.setCtrlIframe(message.loc, function(){}); 
-          }
-          break;
-        case "set":
-          var messageToSend = { action : "update", device_id : 0 };
-          if (message.key == "custom") {
-            messageToSend.device_data = { _is_custom_update : true, location : cShim.ctrlLoc, custom : message.value };
-            //messageToSend.device_data.location = 
-            cShim.sendMessage (messageToSend);
-          }
-          break;
-        case "message":
-          message.from = 0;
-          if (message.to != null) message.to = message.to + 1;
-          cShim.sendMessage(message, "*");
-          break;
-      }
+    switch (message.type) {
+      case "SetLayout":
+        cShim.playerId = message.keymap.playerId;
+        cShim.setGameSelCtrlLayout();
+        break;
+      case "Key":
+        parent.postMessage(message, "*");
+        break;
+      case "Custom":
+        switch (message.action) {
+          case "setCtrl":
+            if (message.gameSelect) {
+              cShim.setCtrlIframe(cShim.gameSelectCtrlLocation, cShim.setGameSelCtrlLayout);
+            } else {
+              cShim.setCtrlIframe(message.loc, function(){});
+            }
+            break;
+          case "set":
+            var messageToSend = { action : "update", device_id : 0 };
+            if (message.key == "custom") {
+              messageToSend.device_data = { _is_custom_update : true, location : cShim.ctrlLoc, custom : message.value };
+              //messageToSend.device_data.location = 
+              cShim.sendMessage (messageToSend);
+            }
+            break;
+          case "message":
+            message.from = 0;
+            if (message.to != null) message.to = message.to + 1;
+            cShim.sendMessage(message, "*");
+            break;
+        }
+        break;
     }
   }
   else if (event.origin !== window.location.origin) {
