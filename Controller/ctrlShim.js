@@ -4,6 +4,8 @@ function CtrlShim() {
   this.ctrlLoc = "";
   this.iframe = null;
   this.playerId = 0;
+  this.gameReady = true;
+  this.messageQueue = [];
 }
 CtrlShim.prototype.initialize = function () {
   window.addEventListener("message", cShim.receiveMessage, false);
@@ -15,12 +17,14 @@ CtrlShim.prototype.sendMessageString = function (msg) {
 CtrlShim.prototype.sendMessage = function (msg) {
   cShim.iframe.contentWindow.postMessage(msg, "*");
 }
-CtrlShim.prototype.setCtrlIframe = function (loc, loadFun) {
+CtrlShim.prototype.setCtrlIframe = function (loc, isGameSelect) {
   if (cShim.ctrlLoc == loc) return;
   cShim.ctrlLoc = loc;
   document.getElementById("ctrl").innerHTML = "<iframe id=\"webgl-content\" src=\"\" scrolling=\"no\" frameBorder=\"0\" style=\"position: absolute; left: 0; height: 100%; top: 0; width: 100%;\"></iframe>";
   cShim.iframe = document.getElementById("webgl-content");
-  cShim.iframe.addEventListener("load", loadFun);
+  if (isGameSelect) cShim.iframe.addEventListener("load", cShim.setGameSelCtrlLayout);
+  cShim.messageQueue = [];
+  cShim.gameReady = isGameSelect;
   cShim.iframe.src = loc;
 }
 CtrlShim.prototype.setGameSelCtrlLayout = function() {
@@ -93,24 +97,18 @@ CtrlShim.prototype.receiveMessage = function (event) {
         switch (message.action) {
           case "setCtrl":
             if (message.gameSelect) {
-              cShim.setCtrlIframe(cShim.gameSelectCtrlLocation, cShim.setGameSelCtrlLayout);
+              cShim.setCtrlIframe(cShim.gameSelectCtrlLocation, true);
             } else {
-              cShim.setCtrlIframe(message.loc, function(){});
+              cShim.setCtrlIframe(message.loc, false);
             }
             break;
           case "set":
-            // Only custom key messages are sent from gameShim
-            var messageToSend = { action : "update", device_id : 0 };
-            if (message.key == "custom") {
-              messageToSend.device_data = { _is_custom_update : true, location : cShim.ctrlLoc, custom : message.value };
-              //messageToSend.device_data.location = 
-              cShim.sendMessage (messageToSend);
-            }
-            break;
           case "message":
-            message.from = 0;
-            if (message.to != null) message.to = message.to + 1;
-            cShim.sendMessage(message, "*");
+            if(cShim.gameReady) {
+              cShim.handleMessageToCtrl(message);
+            } else {
+              cShim.messageQueue.push(message);
+            }
             break;
         }
         break;
@@ -132,12 +130,37 @@ CtrlShim.prototype.receiveMessage = function (event) {
         var readyMsg = cShim.buildReadyMessage();
         readyMsg = cShim.registerPlayers(readyMsg, 20);
         cShim.sendMessage(readyMsg);
+        cShim.gameReady = true;
+        cShim.handleMessageQueue();
         break;
       case "message":
         message.type = "Custom";
         parent.postMessage(message, "*");
         break;
     }
+  }
+}
+CtrlShim.prototype.handleMessageQueue = function () {
+  while (cShim.messageQueue.length > 0) {
+    cShim.handleMessageToCtrl(cShim.messageQueue.shift());
+  }
+}
+CtrlShim.prototype.handleMessageToCtrl = function (message) {
+  switch (message.action) {
+    case "set":
+      // Only custom key messages are sent from gameShim
+      var messageToSend = { action : "update", device_id : 0 };
+      if (message.key == "custom") {
+        messageToSend.device_data = { _is_custom_update : true, location : cShim.ctrlLoc, custom : message.value };
+        //messageToSend.device_data.location = 
+        cShim.sendMessage (messageToSend);
+      }
+      break;
+    case "message":
+      message.from = 0;
+      if (message.to != null) message.to = message.to + 1;
+      cShim.sendMessage(message, "*");
+      break;
   }
 }
 
