@@ -8,7 +8,7 @@ function GameShim() {
   this.currGameLive = "";
   this.prevGame = null;
   this.waitingOnGLoad = 0;
-  this.players = [];
+  this.players = null;
 }
 
 GameShim.prototype.initialize = function () {
@@ -46,7 +46,10 @@ GameShim.prototype.setupGameSelect = function () {
     return;
   }
   var messageToSend = {"type":"SetGames", "gamesList":gLoad.gamesList, "prevGame":gShim.prevGame };
-  gShim.iframe.contentWindow.postMessage(messageToSend, "*");
+  gShim.sendMessage(messageToSend);
+  if (gShim.players != null) {
+    gShim.sendMessage({"type":"SetPlayers", "players":gShim.players });
+  }
 }
 
 GameShim.prototype.buildReadyMessage = function () {
@@ -66,6 +69,7 @@ GameShim.prototype.buildReadyMessage = function () {
 }
 
 GameShim.prototype.sendGamePlayers = function (previous, players) {
+  if (players == null) return;
   var arrayLength = Math.max(previous.length, players.length);
   for (var i = 0; i < arrayLength; i++) {
     if (i >= previous.length) {
@@ -136,7 +140,7 @@ GameShim.prototype.receiveMessage = function (event) {
           gShim.sendGamePlayers(gShim.players, message.players);
           gShim.setGameCtrl(gShim.currGameLive + "controller.html", false);
         }
-          gShim.players = message.players;
+        gShim.players = message.players;
         break;
       case "LeaveGame":
         if (gShim.currGameName == "_ChooseGame") {
