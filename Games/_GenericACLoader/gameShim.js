@@ -165,6 +165,11 @@ GameShim.prototype.receiveMessage = function (event) {
   else if (event.origin !== window.location.origin) {
     switch (message.action) {
       case "set":
+        if (message.key == "ad" && message.value) {
+          var message = { "action":"ad", "complete":"true" };
+          gShim.sendMessage(message);
+          break;
+        }
         if (message.key != "custom") break; // TODO: maybe this breaks things?
         message.type = "Custom";
         parent.postMessage(message, "*");
