@@ -32,8 +32,8 @@ GameLoad.prototype.mapACGamesListToOC = function (acGamesList) {
 		if (game.players_min !== null) ocGame.minPlayers = game.players_min;
 		if (game.players_max === null) ocGame.maxPlayers = 0;
 		else if (game.players_max != game.players_min) ocGame.maxPlayers = game.players_max;
-		if (game.cover !== null) ocGame.gamePic = game.cover;
-		if (game.video !== null) ocGame.highlightPic = game.video;
+		if (game.cover !== null && game.cover.startsWith("https://")) ocGame.gamePic = game.cover;
+		if (game.video !== null && game.video.startsWith("https://")) ocGame.highlightPic = game.video;
 		gLoad.gamesList.push(ocGame);
 	}
   gLoad.gamesList.sort(function(g1, g2) {
