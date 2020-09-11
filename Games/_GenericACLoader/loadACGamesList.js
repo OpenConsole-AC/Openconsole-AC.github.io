@@ -23,7 +23,7 @@ GameLoad.prototype.mapACGamesListToOC = function (acGamesList) {
 	for (var gameKey of Object.keys(games)) {
 		var game = games[gameKey];
 		if (gameKey.startsWith("com.airconsole") && !gameKey.startsWith("com.airconsole.game")) continue;
-		if (game.author === "AirConsole") continue;
+		if (game.author === "AirConsole" || game.author === "N-Dream Ag") continue;
 
 		var ocGame = {};
 		ocGame.name = game.name;
