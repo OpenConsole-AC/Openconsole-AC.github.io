@@ -122,7 +122,7 @@ CtrlShim.prototype.receiveMessage = function (event) {
           message.type = "Custom";
           parent.postMessage(message, "*");
         } else if (message.key == "orientation") {
-          if (message.value == null) {
+          if (message.value == null || message.value == "portrait") {
             cShim.rotateGameCtrl();
           }
         }
