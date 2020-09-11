@@ -6,6 +6,7 @@ function CtrlShim() {
   this.playerId = 0;
   this.gameReady = true;
   this.messageQueue = [];
+  this.playerName = "";
 }
 CtrlShim.prototype.initialize = function () {
   window.addEventListener("message", cShim.receiveMessage, false);
@@ -62,7 +63,9 @@ CtrlShim.prototype.buildReadyMessage = function () {
 
 CtrlShim.prototype.registerPlayers = function (readyMsg, count) {
   for (var i = 0; i < count; i++) {
-    var updtMsg = cShim.buildUpdateMessage(i, "Player " + (i + 1));
+    var name = "Player " + (i + 1);
+    if (i == cShim.playerId) name = cShim.playerName;
+    var updtMsg = cShim.buildUpdateMessage(i, name);
     readyMsg.devices.push(updtMsg.device_data);
   }
   return readyMsg;
@@ -88,6 +91,7 @@ CtrlShim.prototype.receiveMessage = function (event) {
     switch (message.type) {
       case "SetLayout":
         cShim.playerId = message.keymap.playerId;
+        cShim.playerName = message.name;
         cShim.setGameSelCtrlLayout();
         break;
       case "Key":
