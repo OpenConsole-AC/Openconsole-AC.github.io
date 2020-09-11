@@ -99,6 +99,7 @@ CtrlShim.prototype.receiveMessage = function (event) {
             }
             break;
           case "set":
+            // Only custom key messages are sent from gameShim
             var messageToSend = { action : "update", device_id : 0 };
             if (message.key == "custom") {
               messageToSend.device_data = { _is_custom_update : true, location : cShim.ctrlLoc, custom : message.value };
