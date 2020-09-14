@@ -26,7 +26,7 @@ GameShim.prototype.sendMessage = function (msg) {
 }
 
 GameShim.prototype.setGameIframe = function (loc, loadFun) {
-  document.getElementById("game").innerHTML = "<iframe id=\"webgl-content\" src=\"\" scrolling=\"no\" frameBorder=\"0\" style=\"position: absolute; left: 0; height: 100%; top: 0; width: 100%;\"></iframe>";
+  document.getElementById("game").innerHTML = "<iframe id=\"webgl-content\" src=\"\" allowfullscreen=\"\" scrolling=\"no\" noresize=\"noresize\" allow=\"autoplay; microphone; camera; vr\" gesture=\"media\" delegatestickyuseractivation=\"media\" frameborder=\"0\" style=\"position: absolute; left: 0; height: 100%; top: 0; width: 100%;\"></iframe>";
   gShim.iframe = document.getElementById("webgl-content");
   gShim.iframe.addEventListener("load", loadFun);
   gShim.iframe.src = loc;
